@@ -29,6 +29,7 @@ export const orderCreateReducers = createSlice({
 
 // ======== ORDER DETAIL REDUCERS ========
 const initialStateOrderDetail = {
+  loading: true,
   orderItems: [],
   shippingAddress: {},
 };

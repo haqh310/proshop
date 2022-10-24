@@ -79,7 +79,7 @@ function OrderScreen() {
         <Col md={8} className="px-0">
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <h2>Shipping Name</h2>
               <p>
                 <strong>Name: </strong>
                 {order.user.name}

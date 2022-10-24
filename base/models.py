@@ -56,7 +56,7 @@ class OrderItem(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     quantity = models.IntegerField(null=True, blank=True, default=0)
     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True) 
-    image = models.ImageField(null=True, blank=True)
+    image = models.CharField(max_length=500, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 

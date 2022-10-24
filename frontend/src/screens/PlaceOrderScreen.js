@@ -5,43 +5,51 @@ import { Link, useNavigate } from "react-router-dom";
 
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
-import { createOrder, resetOrderCreate } from '../actions/orderActions'
+import { createOrder, resetOrderCreate } from "../actions/orderActions";
 
 function PlaceOrderScreen() {
-  const navigate = useNavigate()
-  const orderCreate = useSelector(state => state.orderCreate)
-  const { order, error, success } = orderCreate
+  const navigate = useNavigate();
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, error, success } = orderCreate;
 
-  const cart = {...useSelector((state) => state.cart)}
+  const cart = { ...useSelector((state) => state.cart) };
 
-  cart.itemsPrice = cart.cartItems.reduce((prices, item) => prices + item.price * item.quantity, 0).toFixed(2)
-  cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2)
-  cart.taxPrice = Number((0.082) * cart.itemsPrice).toFixed(2)
-  cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
-  
+  cart.itemsPrice = cart.cartItems
+    .reduce((prices, item) => prices + item.price * item.quantity, 0)
+    .toFixed(2);
+  cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2);
+  cart.taxPrice = Number(0.082 * cart.itemsPrice).toFixed(2);
+  cart.totalPrice = (
+    Number(cart.itemsPrice) +
+    Number(cart.shippingPrice) +
+    Number(cart.taxPrice)
+  ).toFixed(2);
+
   if (!cart.paymentMethod) {
-    navigate('/payment')
+    navigate("/payment");
   }
-  
-  const dispatch = useDispatch()
-  useEffect(()=>{
+
+  const dispatch = useDispatch();
+  useEffect(() => {
     if (success) {
-      dispatch(resetOrderCreate())
-      navigate(`/order/${order._id}`)
+      dispatch(resetOrderCreate());
+      navigate(`/order/${order._id}`);
     }
-  }, [dispatch, navigate, success, order])
+  }, [dispatch, navigate, success, order]);
 
   const placeOrderHandler = () => {
-    dispatch(createOrder({
-      orderItems: cart.cartItems,
-      shippingAddress: cart.shippingAddress,
-      paymentMethod: cart.paymentMethod,
-      itemsPrice: cart.itemsPrice,
-      shippingPrice: cart.shippingPrice,
-      taxPrice: cart.taxPrice,
-      totalPrice: cart.totalPrice,
-    }))
-  }
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -109,7 +117,7 @@ function PlaceOrderScreen() {
           <Card>
             <ListGroup variant="flush">
               <ListGroup.Item>
-              <h2>Order Summary</h2>
+                <h2>Order Summary</h2>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
@@ -136,16 +144,17 @@ function PlaceOrderScreen() {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {error && <Message variant={'danger'}>{error}</Message>}
+                {error && <Message variant={"danger"}>{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
-                  type='button'
-                  className='btn-block'
+                  type="button"
+                  className="btn-block"
                   disabled={cart.cartItems.length === 0}
                   onClick={placeOrderHandler}
-                  >
-                    Place Order</Button>
+                >
+                  Place Order
+                </Button>
               </ListGroup.Item>
             </ListGroup>
           </Card>
